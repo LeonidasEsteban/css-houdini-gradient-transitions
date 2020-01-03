@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Pokemon Palette - Background transitions</title>
+  <style>
+    body {
+      height: 100vh;
+      margin: 0;
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: 100px 1fr;
+      align-items: center;
+      justify-items: center;
+
+      --primary: #ffd924;
+      --secondary: #e5961d;
+      --tertiary: #cf4310;
+
+      transition: --primary 1s, --secondary 1s, --tertiary 1s;
+
+      background:
+        linear-gradient(var(--primary), transparent),
+        linear-gradient(90deg, var(--secondary), transparent),
+        linear-gradient(-90deg, var(--tertiary), transparent);
+    }
+
+    body:hover {
+      --primary: #71bfb1;
+      --secondary: #5fa195;
+      --tertiary: #c55d00;
+    }
+
+
+    .palette {
+      justify-self: stretch;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: 100px;
+    }
+
+    .palette .primary {
+      background-color: var(--primary);
+    }
+
+    .palette .secondary {
+      background-color: var(--secondary);
+    }
+
+    .palette .tertiary {
+      background-color: var(--tertiary);
+    }
+
+    button {
+      padding: 1em 2em;
+      font-size: 20px;
+      border: none;
+      outline: 0;
+      --bezel-width: 5;
+      --bezel-radius: 20px 0px 20px 0px;
+      --bezel-color: var(--primary);
+      -webkit-mask: paint(bezel, filled);
+      background-image: paint(bezel, stroke);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="palette">
+    <span class="primary"></span>
+    <span class="secondary"></span>
+    <span class="tertiary"></span>
+  </div>
+  <button id="button">Vamo' a calmarno'</button>
+
+  <script>
+    window.CSS.registerProperty({
+      name: '--primary',
+      syntax: '<color>',
+      inherits: true,
+      initialValue: '#ffd924',
+    })
+    window.CSS.registerProperty({
+      name: '--secondary',
+      syntax: '<color>',
+      inherits: true,
+      initialValue: '#e5961d',
+    })
+    window.CSS.registerProperty({
+      name: '--tertiary',
+      syntax: '<color>',
+      inherits: true,
+      initialValue: '#cf4310',
+    })
+    window.CSS.paintWorklet.addModule('bezel.js')
+
+    button.addEventListener('click', () => {
+      updateProperties(['#71bfb1', '#5fa195', '#c55d00'])
+    })
+
+    function updateProperties(colors) {
+      document.body.style.setProperty('--primary', colors[0])
+      document.body.style.setProperty('--secondary', colors[1])
+      document.body.style.setProperty('--tertiary', colors[2])
+    }
+  </script>
+</body>
+
+</html>
